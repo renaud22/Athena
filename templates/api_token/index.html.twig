@@ -19,7 +19,7 @@
                 {{ form_start(form) }}
                     <div class="row align-items-end">
                         <div class="col-md-8">
-                            {{ form_row(form.description) }}
+                            {{ form_row(form.description, {'attr': {'class': 'form-control bg-dark text-light border-secondary'}}) }}
                         </div>
                         <div class="col-md-4 mb-3">
                             <button class="btn btn-primary w-100">Générer un Token</button>
@@ -33,45 +33,52 @@
             <div class="card-header">
                 Mes Tokens Actifs
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 {% if api_tokens is empty %}
-                    <div class="alert alert-info">Aucun token actif.</div>
+                    <div class="alert alert-info m-3">Aucun token actif.</div>
                 {% else %}
-                    <div class="table-responsive">
-                        <table class="table table-dark table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Description</th>
-                                    <th>Token (Copiez-le maintenant !)</th>
-                                    <th>Créé le</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for token in api_tokens %}
-                                <tr>
-                                    <td>{{ token.description }}</td>
-                                    <td>
-                                        <div class="input-group input-group-sm">
-                                            <input type="text" class="form-control bg-dark text-light border-secondary" value="{{ token.token }}" readonly>
-                                            <button class="btn btn-outline-secondary" onclick="navigator.clipboard.writeText(this.previousElementSibling.value)">Copier</button>
-                                        </div>
-                                    </td>
-                                    <td>{{ token.createdAt ? token.createdAt|date('d/m/Y H:i') : '' }}</td>
-                                    <td>
-                                        <form method="post" action="{{ path('app_api_token_delete', {'id': token.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce token ?');">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ token.id) }}">
-                                            <button class="btn btn-danger btn-sm">Révoquer</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                    <div class="list-group list-group-flush">
+                        {% for token in api_tokens %}
+                            <div class="list-group-item bg-dark border-secondary text-light d-flex flex-column flex-md-row justify-content-between align-items-md-center p-3">
+                                <div class="mb-3 mb-md-0">
+                                    <h5 class="mb-1 text-primary">{{ token.description }}</h5>
+                                    <small class="text-muted">Créé le {{ token.createdAt ? token.createdAt|date('d/m/Y H:i') : '' }}</small>
+                                </div>
+                                <div class="d-flex flex-column flex-md-row gap-2 align-items-md-center">
+                                    <div class="input-group input-group-sm" style="max-width: 300px;">
+                                        <input type="password" class="form-control bg-dark text-light border-secondary" value="{{ token.token }}" readonly id="token-{{ token.id }}">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="toggleToken('token-{{ token.id }}', this)">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary" type="button" onclick="navigator.clipboard.writeText(document.getElementById('token-{{ token.id }}').value)">
+                                            <i class="bi bi-clipboard"></i>
+                                        </button>
+                                    </div>
+                                    <form method="post" action="{{ path('app_api_token_delete', {'id': token.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce token ?');" class="m-0">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ token.id) }}">
+                                        <button class="btn btn-danger btn-sm w-100">Révoquer</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function toggleToken(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('bi-eye', 'bi-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('bi-eye-slash', 'bi-eye');
+        }
+    }
+</script>
 {% endblock %}
