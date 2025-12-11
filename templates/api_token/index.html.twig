@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Tokens API{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Gestion des Tokens API</h1>
+    <p class="lead">Gérez vos clés d'accès pour les outils externes (Make, n8n, etc.).</p>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Nouveau Token
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="row align-items-end">
+                    <div class="col-md-8">
+                        {{ form_row(form.description) }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <button class="btn btn-primary w-100">Générer un Token</button>
+                    </div>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Mes Tokens Actifs
+        </div>
+        <div class="card-body">
+            {% if api_tokens is empty %}
+                <div class="alert alert-info">Aucun token actif.</div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Token (Copiez-le maintenant !)</th>
+                                <th>Créé le</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for token in api_tokens %}
+                            <tr>
+                                <td>{{ token.description }}</td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control font-monospace" value="{{ token.token }}" readonly>
+                                        <button class="btn btn-outline-secondary" type="button" onclick="navigator.clipboard.writeText('{{ token.token }}')">
+                                            Copier
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>{{ token.createdAt ? token.createdAt|date('d/m/Y H:i') : '' }}</td>
+                                <td>
+                                    <form method="post" action="{{ path('app_api_token_delete', {'id': token.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir révoquer ce token ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ token.id) }}">
+                                        <button class="btn btn-danger btn-sm">Révoquer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
