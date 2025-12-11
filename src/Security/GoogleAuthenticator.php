@@ -17,13 +17,15 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
+use Twig\Environment;
 
 class GoogleAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
 {
     public function __construct(
         private ClientRegistry $clientRegistry,
         private EntityManagerInterface $entityManager,
-        private RouterInterface $router
+        private RouterInterface $router,
+        private Environment $twig
     ) {
     }
 
@@ -54,7 +56,7 @@ class GoogleAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 // 2) the user is new!
                 // In this specific app, we only allow whitelisted users (already in DB).
                 // So if not found, we throw an exception.
-                throw new CustomUserMessageAuthenticationException('Email not found in whitelist. Please contact the administrator.');
+                throw new CustomUserMessageAuthenticationException('Email non trouvé dans la liste blanche. Veuillez contacter l\'administrateur.');
             })
         );
     }
@@ -62,7 +64,7 @@ class GoogleAuthenticator extends OAuth2Authenticator implements AuthenticationE
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         // change "app_homepage" to some route in your app
-        $targetUrl = $this->router->generate('app_homepage');
+        $targetUrl = $this->router->generate('app_dashboard');
 
         return new RedirectResponse($targetUrl);
     }
@@ -71,7 +73,9 @@ class GoogleAuthenticator extends OAuth2Authenticator implements AuthenticationE
     {
         $message = strtr($exception->getMessageKey(), $exception->getMessageData());
 
-        return new Response($message, Response::HTTP_FORBIDDEN);
+        $request->getSession()->getFlashBag()->add('error', $message);
+
+        return new RedirectResponse($this->router->generate('app_login'));
     }
 
     /**
@@ -81,7 +85,7 @@ class GoogleAuthenticator extends OAuth2Authenticator implements AuthenticationE
     public function start(Request $request, AuthenticationException $authException = null): Response
     {
         return new RedirectResponse(
-            '/connect/google', // might be the site, where users choose their oauth provider
+            $this->router->generate('app_login'),
             Response::HTTP_TEMPORARY_REDIRECT
         );
     }

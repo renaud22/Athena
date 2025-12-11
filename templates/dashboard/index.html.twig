@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-secondary">
+        <h1 class="h2">Dashboard</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary">Partager</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Exporter</button>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                <span data-feather="calendar"></span>
+                Cette semaine
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Projets en cours</h5>
+                    <p class="card-text display-4">3</p>
+                    <a href="#" class="btn btn-primary btn-sm">Voir les projets</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Prospects Chauds</h5>
+                    <p class="card-text display-4">12</p>
+                    <a href="#" class="btn btn-primary btn-sm">Voir les prospects</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Chiffre d'Affaires (Mois)</h5>
+                    <p class="card-text display-4">0 €</p>
+                    <a href="#" class="btn btn-primary btn-sm">Détails</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mt-5">Activité Récente</h2>
+    <div class="table-responsive">
+        <table class="table table-dark table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Sujet</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1,001</td>
+                    <td>Relance Client X</td>
+                    <td>Email</td>
+                    <td>11/12/2025</td>
+                    <td><span class="badge bg-success">Fait</span></td>
+                </tr>
+                <tr>
+                    <td>1,002</td>
+                    <td>Devis Site Web</td>
+                    <td>Proposition</td>
+                    <td>10/12/2025</td>
+                    <td><span class="badge bg-warning text-dark">En attente</span></td>
+                </tr>
+                <tr>
+                    <td>1,003</td>
+                    <td>Réunion Lancement</td>
+                    <td>Meeting</td>
+                    <td>09/12/2025</td>
+                    <td><span class="badge bg-secondary">Terminé</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
