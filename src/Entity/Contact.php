@@ -16,6 +16,9 @@ class Contact
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $gender = null;
+
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
 
@@ -57,6 +60,18 @@ class Contact
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): static
+    {
+        $this->gender = $gender;
+
+        return $this;
     }
 
     public function getFirstname(): ?string

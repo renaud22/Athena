@@ -43,6 +43,14 @@ final class CommercialRelationController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: 'app_commercial_relation_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function show(CommercialRelation $commercialRelation): Response
+    {
+        return $this->render('commercial_relation/show.html.twig', [
+            'commercial_relation' => $commercialRelation,
+        ]);
+    }
+
     #[Route('/{id}/edit', name: 'app_commercial_relation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, CommercialRelation $commercialRelation, EntityManagerInterface $entityManager): Response
     {

@@ -22,6 +22,7 @@ class CommercialRelation
     public function __construct()
     {
         $this->contacts = new ArrayCollection();
+        $this->salesStatus = 'Prospect froid';
     }
 
     #[ORM\Column(length: 255)]

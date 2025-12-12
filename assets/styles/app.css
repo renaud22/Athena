@@ -515,3 +515,133 @@ a:hover {
     transform: translateY(2px) scale(1.2) rotate(15deg);
     text-shadow: 0 0 15px rgba(244, 165, 0, 1);
 }
+
+/* Athena Card Design */
+.card, .athena-card {
+    background: linear-gradient(145deg, #2c2c2c, #222);
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before, .athena-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--athena-yellow);
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.card:hover, .athena-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card:hover::before, .athena-card:hover::before {
+    opacity: 1;
+}
+
+/* Card Header Styling */
+.card-header {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--athena-border);
+    min-height: 57px;
+    display: flex;
+    align-items: center;
+    padding-left: 1.5rem; /* Make space for the yellow border */
+    position: relative;
+    z-index: 2; /* Ensure header content is above the yellow border */
+}
+
+/* List View Adjustments */
+/* When card is in flex-row mode (List View) */
+.athena-card.flex-row {
+    min-height: auto;
+    align-items: stretch; /* Ensure header and body have same height */
+}
+
+.athena-card.flex-row .card-header {
+    background-color: transparent;
+    border-bottom: none;
+    border-right: 1px solid var(--athena-border);
+    width: 30%;
+    min-width: 250px;
+    max-width: 350px;
+    margin-bottom: 0;
+    border-radius: 0;
+    padding-right: 1.5rem;
+}
+
+.athena-card.flex-row .card-body {
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    padding: 1rem 1.5rem;
+}
+
+.athena-card.flex-row .card-body > div {
+    margin-bottom: 0 !important;
+    flex: 1;
+}
+
+.athena-card.flex-row .mt-auto {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+    flex: 0 0 auto;
+    margin-left: 2rem;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Athena Custom Utilities */
+.text-athena-gold {
+    color: var(--athena-yellow) !important;
+}
+
+.bg-athena-dark {
+    background-color: var(--athena-bg) !important;
+}
+
+.border-athena-gold {
+    border-color: var(--athena-yellow) !important;
+}
+
+.btn-athena-action {
+    background-color: var(--athena-yellow);
+    color: #000;
+    font-weight: 600;
+    border: none;
+}
+
+.btn-athena-action:hover {
+    background-color: #d48e00;
+    color: #000;
+}
+
+/* Fix for floating labels on selects to behave like inputs */
+.form-floating > .form-select:not(:focus):invalid ~ label {
+    opacity: 1;
+    transform: scale(1) translateY(0) translateX(0);
+    color: #adb5bd; /* Matches .text-muted color used in this theme */
+}
+
+/* Ensure the select text (empty option) is hidden so it doesn't overlap label */
+.form-floating > .form-select:not(:focus):invalid {
+    color: transparent;
+}

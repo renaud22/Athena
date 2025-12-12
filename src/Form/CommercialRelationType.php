@@ -69,7 +69,9 @@ class CommercialRelationType extends AbstractType
             ])
             ->add('salesStatus', ChoiceType::class, [
                 'label' => 'Statut commercial',
-                'required' => false, // Handled by validation callback
+                'required' => true,
+                'placeholder' => false,
+                'empty_data' => 'Prospect froid',
                 'constraints' => [
                     new Callback([$this, 'validateSalesStatus']),
                 ],

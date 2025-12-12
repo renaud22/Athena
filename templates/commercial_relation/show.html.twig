@@ -1,0 +1,335 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de {{ commercial_relation.name }}{% endblock %}
+
+{% block body %}
+<div class="">
+    {# Header Section #}
+    <div class="d-flex justify-content-between align-items-center pt-3 pb-4 mb-4 border-bottom border-secondary animate__animated animate__fadeInDown">
+        <div class="d-flex align-items-center gap-3">
+            <h1 class="h2 fw-bold text-uppercase tracking-wide mb-0">
+                <span class="text-primary">Détails</span> {{ commercial_relation.name }}
+            </h1>
+            <div class="d-flex gap-2 align-items-center">
+                <span class="badge bg-dark border border-secondary text-muted">
+                    {{ commercial_relation.type }}
+                </span>
+                <span class="badge bg-secondary">
+                    {{ commercial_relation.salesStatus|default('-') }}
+                </span>
+            </div>
+        </div>
+        <div class="d-flex gap-2 align-items-center">
+            <a href="{{ path('app_commercial_relation_index') }}" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-bs-toggle="tooltip" title="Retour">
+                <i class="text-primary bi bi-arrow-left"></i>
+            </a>
+            <a href="{{ path('app_commercial_relation_edit', {'id': commercial_relation.id}) }}" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" data-bs-toggle="tooltip" title="Modifier">
+                <i class="text-primary bi bi-pencil"></i>
+            </a>
+            {{ include('commercial_relation/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {# Left Column: Identity & Strategy (Stacked) #}
+        <div class="col-lg-6 animate__animated animate__fadeInLeft">
+            {# Identity Card #}
+            <div class="card athena-card mb-4 border-0 shadow-sm">
+                <div class="card-header border-bottom border-secondary py-3">
+                    <h3 class="h5 text-primary mb-0 fw-bold">
+                        <i class="text-primary bi bi-info-circle me-2"></i>Informations Générales
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="mb-1 d-flex align-items-center"><i class="text-primary bi bi-globe me-2"></i>Site Web</label>
+                                <div class="ps-4">
+                                    {% if commercial_relation.website %}
+                                        <div class="d-flex align-items-center gap-2">
+                                            <a href="{{ commercial_relation.website }}" target="_blank" class="text-decoration-none text-muted hover-gold d-inline-flex align-items-center">
+                                                {{ commercial_relation.website }}
+                                            </a>
+                                            <button class="btn btn-link btn-sm p-0 text-warning hover-primary" data-controller="clipboard" data-clipboard-content-value="{{ commercial_relation.website }}" data-action="clipboard#copy" title="Copier">
+                                                <i class="text-primary bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted fst-italic">-</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="mb-1 d-flex align-items-center"><i class="text-primary bi bi-tags me-2"></i>Types de relation</label>
+                                <div class="ps-4">
+                                    {% for type in commercial_relation.relationTypes %}
+                                        <span class="badge bg-dark text-light border border-secondary me-1">{{ type }}</span>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="mb-1 d-flex align-items-center"><i class="text-primary bi bi-hash me-2"></i>SIRET</label>
+                                <div class="ps-4 d-flex align-items-center gap-2 text-muted">
+                                    {{ commercial_relation.siret|default('-') }}
+                                    {% if commercial_relation.siret %}
+                                        <button class="btn btn-link btn-sm p-0 text-warning hover-primary" data-controller="clipboard" data-clipboard-content-value="{{ commercial_relation.siret }}" data-action="clipboard#copy" title="Copier">
+                                            <i class="text-primary bi bi-clipboard"></i>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="mb-1 d-flex align-items-center"><i class="text-primary bi bi-currency-euro me-2"></i>TVA Intra</label>
+                                <div class="ps-4 d-flex align-items-center gap-2 text-muted">
+                                    {{ commercial_relation.tvaIntra|default('-') }}
+                                    {% if commercial_relation.tvaIntra %}
+                                        <button class="btn btn-link btn-sm p-0 text-warning hover-primary" data-controller="clipboard" data-clipboard-content-value="{{ commercial_relation.tvaIntra }}" data-action="clipboard#copy" title="Copier">
+                                            <i class="text-primary bi bi-clipboard"></i>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Addresses Card #}
+            <div class="card athena-card mb-4 border-0 shadow-sm">
+                <div class="card-header border-bottom border-secondary py-3">
+                    <h3 class="h5 text-primary mb-0 fw-bold">
+                        <i class="text-primary bi bi-geo-alt me-2"></i>Adresses
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label class="mb-1 d-flex align-items-center"><i class="text-primary bi bi-receipt me-2"></i>Adresse de Facturation</label>
+                            <div class="ps-4 d-flex align-items-start gap-2 text-muted">
+                                <span>{{ commercial_relation.billingAddress|replace({"\n": '<br>'})|default('-')|raw }}</span>
+                                {% if commercial_relation.billingAddress %}
+                                    <button class="btn btn-link btn-sm p-0 text-warning hover-primary" data-controller="clipboard" data-clipboard-content-value="{{ commercial_relation.billingAddress }}" data-action="clipboard#copy" title="Copier">
+                                        <i class="text-primary bi bi-clipboard"></i>
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="mb-1 d-flex align-items-center"><i class="text-primary bi bi-truck me-2"></i>Adresse Physique</label>
+                            <div class="ps-4 d-flex align-items-start gap-2 text-muted">
+                                <span>{{ commercial_relation.physicalAddress|replace({"\n": '<br>'})|default('-')|raw }}</span>
+                                {% if commercial_relation.physicalAddress %}
+                                    <button class="btn btn-link btn-sm p-0 text-warning hover-primary" data-controller="clipboard" data-clipboard-content-value="{{ commercial_relation.physicalAddress }}" data-action="clipboard#copy" title="Copier">
+                                        <i class="text-primary bi bi-clipboard"></i>
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Strategy Card #}
+            <div class="card athena-card border-0 shadow-sm">
+                <div class="card-header border-bottom border-secondary py-3">
+                    <h3 class="h5 text-primary mb-0 fw-bold">
+                        <i class="text-primary bi bi-clipboard-data me-2"></i>Remarques
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="mb-1 d-flex align-items-center"><i class="text-primary bi bi-arrow-up-circle me-2"></i>Mes Avantages</label>
+                            <div class="ps-4 text-muted">
+                                {{ commercial_relation.myBenefits|replace({"\n": '<br>'})|default('-')|raw }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="mb-1 d-flex align-items-center"><i class="text-primary bi bi-arrow-down-circle me-2"></i>Leurs Avantages</label>
+                            <div class="ps-4 text-muted">
+                                {{ commercial_relation.theirBenefits|replace({"\n": '<br>'})|default('-')|raw }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2 pt-3 border-top border-secondary border-opacity-25">
+                        <label class="mb-1 d-flex align-items-center"><i class="text-primary bi bi-sticky me-2"></i>Commentaires</label>
+                        <div class="ps-4 text-muted">
+                            {{ commercial_relation.comments|replace({"\n": '<br>'})|default('-')|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Right Column: Contacts #}
+        <div class="col-lg-6 animate__animated animate__fadeInRight">
+            <div class="card athena-card border-0 shadow-sm">
+                <div class="card-header border-bottom border-secondary py-3 d-flex justify-content-between align-items-center">
+                    <h3 class="h5 text-primary mb-0 fw-bold">
+                        <i class="text-primary bi bi-people me-2"></i>Contacts
+                    </h3>
+                    <span class="badge bg-secondary rounded-pill">{{ commercial_relation.contacts|length }}</span>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="contacts-list overflow-auto p-4" style="max-height: 800px; overflow-x: hidden;">
+                        {% for contact in commercial_relation.contacts %}
+                            <div class="{% if not loop.last %}mb-4 pb-4 border-bottom border-secondary border-opacity-25{% endif %}">
+                                <div class="row align-items-center g-3">
+                                    {# Col 1: Avatar & Identity #}
+                                    <div class="col-md-5">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <h6 class="mb-0 text-light fw-bold">
+                                                    {{ contact.firstName }} {{ contact.lastName }}
+                                                    <small class="text-muted fw-normal fst-italic">
+                                                        {% if contact.gender == 'M' %}(M.){% elseif contact.gender == 'F' %}(Mme){% endif %}
+                                                    </small>
+                                                </h6>
+                                                <small class="text-muted d-block">{{ contact.jobTitle|default('-') }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {# Col 2: Contact Info #}
+                                    <div class="col-md-5">
+                                        <div class="d-flex flex-column gap-1 small">
+                                            <div class="d-flex align-items-center text-truncate">
+                                                <i class="text-primary bi bi-envelope me-2 text-primary" style="width: 16px;"></i>
+                                                {% if contact.email %}
+                                                    <a href="mailto:{{ contact.email }}" class="text-decoration-none text-muted hover-gold text-truncate me-2" title="{{ contact.email }}">
+                                                        {{ contact.email }}
+                                                    </a>
+                                                    <button class="btn btn-link btn-sm p-0 text-warning hover-primary" data-controller="clipboard" data-clipboard-content-value="{{ contact.email }}" data-action="clipboard#copy" title="Copier">
+                                                        <i class="text-primary bi bi-clipboard"></i>
+                                                    </button>
+                                                {% else %}
+                                                    <span class="text-muted">-</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <i class="text-primary bi bi-telephone me-2 text-primary" style="width: 16px;"></i>
+                                                {% if contact.phone %}
+                                                    <a href="tel:{{ contact.phone }}" class="text-decoration-none text-muted hover-gold me-2">
+                                                        {{ contact.phone }}
+                                                    </a>
+                                                    <button class="btn btn-link btn-sm p-0 text-warning hover-primary" data-controller="clipboard" data-clipboard-content-value="{{ contact.phone }}" data-action="clipboard#copy" title="Copier">
+                                                        <i class="text-primary bi bi-clipboard"></i>
+                                                    </button>
+                                                {% else %}
+                                                    <span class="text-muted">-</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {# Col 3: Toggle #}
+                                    <div class="col-md-2 text-end">
+                                        <button class="btn btn-sm btn-outline-warning" type="button" data-bs-toggle="collapse" data-bs-target="#contactDetails{{ contact.id }}" aria-expanded="false" aria-controls="contactDetails{{ contact.id }}">
+                                            <i class="text-primary bi bi-chevron-down rotate-icon"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {# Collapsible Details #}
+                                <div class="collapse mt-3" id="contactDetails{{ contact.id }}">
+                                    <div class="ps-5 ms-2 border-start border-secondary border-opacity-25">
+                                        <div class="d-flex flex-column gap-2 mb-3">
+                                            {# LinkedIn #}
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 100px;"><i class="text-primary bi bi-linkedin me-2"></i>LinkedIn :</span>
+                                                <span class="text-muted d-flex align-items-center gap-2">
+                                                    {% if contact.linkedinUrl %}
+                                                        <a href="{{ contact.linkedinUrl }}" target="_blank" class="text-decoration-none text-muted hover-gold">
+                                                            {{ contact.linkedinUrl }}
+                                                        </a>
+                                                        <button class="btn btn-link btn-sm p-0 text-warning hover-primary" data-controller="clipboard" data-clipboard-content-value="{{ contact.linkedinUrl }}" data-action="clipboard#copy" title="Copier">
+                                                            <i class="text-primary bi bi-clipboard"></i>
+                                                        </button>
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+
+                                            {# Adresse Perso #}
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 100px;"><i class="text-primary bi bi-house me-2"></i>Adresse Perso :</span>
+                                                <span class="text-muted d-flex align-items-center gap-2">
+                                                    {% if contact.personalAddress %}
+                                                        {{ contact.personalAddress|replace({"\n": ', '})|raw }}
+                                                        <button class="btn btn-link btn-sm p-0 text-warning hover-primary" data-controller="clipboard" data-clipboard-content-value="{{ contact.personalAddress }}" data-action="clipboard#copy" title="Copier">
+                                                            <i class="text-primary bi bi-clipboard"></i>
+                                                        </button>
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+
+                                            {# Anniversaire #}
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 100px;"><i class="text-primary bi bi-cake2 me-2"></i>Anniversaire :</span>
+                                                <span class="text-muted">
+                                                    {% if contact.birthday %}
+                                                        {{ contact.birthday|date('d/m/Y') }}
+                                                        <span class="ms-1">({{ date().diff(date(contact.birthday)).y }} ans)</span>
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {# Loisirs #}
+                                        <div class="mb-3">
+                                            <div class="mb-1"><i class="text-primary bi bi-controller me-2"></i>Loisirs :</div>
+                                            <div class="text-muted ps-4">
+                                                {{ contact.hobbies|replace({"\n": '<br>'})|default('-')|raw }}
+                                            </div>
+                                        </div>
+
+                                        {# Bio / Notes #}
+                                        <div>
+                                            <div class="mb-1"><i class="text-primary bi bi-quote me-2"></i>Bio / Notes :</div>
+                                            <div class="text-muted ps-4 fst-italic">
+                                                {{ contact.bio|replace({"\n": '<br>'})|default('-')|raw }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="text-muted fst-italic text-center py-3">Aucun contact enregistré.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .hover-gold:hover {
+        color: var(--athena-yellow) !important;
+    }
+    .bg-opacity-10 {
+        --bs-bg-opacity: 0.1;
+    }
+    .rotate-icon {
+        transition: transform 0.3s ease;
+        display: inline-block;
+    }
+    .btn[aria-expanded="true"] .rotate-icon {
+        transform: rotate(180deg);
+    }
+</style>
+{% endblock %}
