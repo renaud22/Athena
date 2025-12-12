@@ -50,6 +50,69 @@ a:hover {
     color: var(--athena-yellow) !important;
 }
 
+/* Card Styling */
+.card {
+    background-color: var(--athena-card-bg);
+    border-color: var(--athena-border);
+}
+
+.card-header {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom-color: var(--athena-border);
+}
+
+/* Form Inputs Styling */
+.form-control, .form-select {
+    background-color: #151515; /* Darker than card for contrast */
+    border-color: var(--athena-border);
+    color: var(--athena-text);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #151515;
+    border-color: var(--athena-yellow);
+    color: var(--athena-text);
+    box-shadow: 0 0 0 0.25rem rgba(244, 165, 0, 0.25);
+}
+
+.form-control::placeholder {
+    color: #6c757d;
+}
+
+/* Floating Labels Overrides for Dark Mode */
+.form-floating > label {
+    color: #adb5bd; /* Light gray for label text */
+}
+
+.form-floating > .form-control:not([type="hidden"]):focus ~ label,
+.form-floating > .form-control:not([type="hidden"]):not(:placeholder-shown) ~ label,
+.form-floating > .form-select ~ label {
+    color: var(--athena-yellow); /* Highlight label when focused/filled */
+    opacity: 1;
+    transform: scale(0.85) translateY(-0.75rem) translateX(0.15rem);
+}
+
+/* Show placeholder when focused in floating labels */
+.form-floating > .form-control:focus::placeholder {
+    color: #6c757d;
+    opacity: 1;
+}
+
+.form-floating > .form-control:-webkit-autofill {
+    -webkit-text-fill-color: var(--athena-text) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.form-check-input {
+    background-color: #151515;
+    border-color: var(--athena-border);
+}
+
+.form-check-input:checked {
+    background-color: var(--athena-yellow);
+    border-color: var(--athena-yellow);
+}
+
 .bg-dark {
     background-color: var(--athena-bg) !important;
 }
@@ -82,6 +145,24 @@ a:hover {
     background-color: var(--athena-border);
     color: #fff;
     border-color: var(--athena-border);
+}
+
+/* Custom Outline Primary (Yellow) */
+.btn-outline-primary {
+    color: var(--athena-yellow);
+    border-color: var(--athena-yellow);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--athena-yellow);
+    border-color: var(--athena-yellow);
+    color: #000; /* Black text on yellow bg */
+}
+
+.btn-outline-primary:disabled, .btn-outline-primary.disabled {
+    color: var(--athena-yellow);
+    border-color: var(--athena-yellow);
+    opacity: 0.5;
 }
 
 /* Navbar / Sidebar Overrides */
@@ -120,4 +201,297 @@ a:hover {
     color: #ff6b6b;
     border-radius: 0.375rem;
     padding: 1rem;
+}
+
+/* TomSelect Dark Mode Overrides */
+.ts-wrapper .ts-control {
+    background-color: transparent;
+    border: 1px solid var(--athena-border);
+    color: var(--athena-text);
+    border-radius: 0.375rem; /* Bootstrap rounded */
+}
+
+.ts-wrapper.focus .ts-control {
+    border-color: var(--athena-yellow);
+    box-shadow: 0 0 0 0.25rem rgba(244, 165, 0, 0.25);
+}
+
+.ts-wrapper .ts-control > input {
+    color: var(--athena-text);
+}
+
+.ts-dropdown {
+    background-color: var(--athena-card-bg);
+    border: 1px solid var(--athena-border);
+    color: var(--athena-text);
+}
+
+.ts-dropdown .option {
+    color: var(--athena-text);
+}
+
+.ts-dropdown .option.active,
+.ts-dropdown .option:hover {
+    background-color: var(--athena-yellow);
+    color: #000;
+}
+
+.ts-dropdown .optgroup-header {
+    color: #adb5bd;
+    background-color: var(--athena-bg);
+}
+
+/* Selected items in multi-select */
+.ts-wrapper.multi .ts-control > div {
+    background-color: var(--athena-yellow);
+    color: #000;
+    border: 1px solid #d48e00;
+    border-radius: 3px;
+}
+
+/* Remove the white background from the input container if present */
+.ts-control, .ts-control input {
+    background-color: transparent !important;
+}
+
+/* Fix for the "white input" look */
+.ts-wrapper.single .ts-control, .ts-wrapper.multi .ts-control {
+    background-image: none; /* Remove any default gradients */
+}
+
+/* Choices.js Dark Mode Overrides */
+.choices__inner {
+    background-color: transparent !important;
+    border: 1px solid var(--athena-border) !important;
+    border-radius: 0.375rem !important;
+    color: var(--athena-text) !important;
+    min-height: 58px; /* Match floating label height */
+}
+
+.choices__input {
+    background-color: transparent !important;
+    color: var(--athena-text) !important;
+}
+
+.choices__list--dropdown, .choices__list[aria-expanded] {
+    background-color: var(--athena-card-bg) !important;
+    border: 1px solid var(--athena-border) !important;
+    color: var(--athena-text) !important;
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted,
+.choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
+    background-color: var(--athena-yellow) !important;
+    color: #000 !important;
+}
+
+.choices__item {
+    color: var(--athena-text);
+}
+
+/* Selected items (tags) */
+.choices__list--multiple .choices__item {
+    background-color: var(--athena-yellow) !important;
+    border: 1px solid #d48e00 !important;
+    color: #000 !important;
+}
+
+.choices__button {
+    border-left: 1px solid #000 !important;
+    filter: brightness(0); /* Make X icon black */
+}
+
+.choices[data-type*="select-multiple"] .choices__button,
+.choices[data-type*="text"] .choices__button {
+    border-left: 1px solid #000;
+}
+
+/* Choices.js Floating Label Fix */
+.form-floating .choices {
+    margin-bottom: 0;
+}
+
+.form-floating .choices .choices__inner {
+    padding-top: 1.625rem;
+    padding-bottom: 0.625rem;
+    min-height: 58px;
+    border-radius: var(--bs-border-radius);
+}
+
+/* Dynamic Floating Label for Choices.js */
+/* 1. Default State (Rest): Label is centered, gray, like a placeholder */
+.form-floating:has(.choices) label,
+.form-floating .choices ~ label {
+    color: rgba(248, 249, 250, 0.65); /* Standard placeholder color */
+    transform: scale(1) translateY(0) translateX(0);
+    transition: all 0.1s ease-in-out;
+    z-index: 5;
+    pointer-events: none; /* Allow clicking through to the input */
+}
+
+/* 2. Float State: Triggered when Focused, Open, or Has Items */
+.form-floating:has(.choices.is-focused) label,
+.form-floating:has(.choices.is-open) label,
+.form-floating:has(.choices__list--multiple .choices__item) label,
+.form-floating .choices.is-focused ~ label,
+.form-floating .choices.is-open ~ label {
+    color: var(--athena-yellow) !important;
+    opacity: 1;
+    transform: scale(0.85) translateY(-0.75rem) translateX(0.15rem);
+}
+
+/* Choices.js Dark Mode & Transparency Fixes */
+.choices__inner {
+    background-color: var(--athena-bg) !important; /* Fix transparency issue */
+    border: 1px solid var(--athena-border) !important;
+    color: var(--athena-text) !important;
+    padding-left: 0.75rem !important;
+    min-height: 58px !important; /* Force min height */
+    height: auto !important; /* Allow growing */
+    display: flex;
+    align-items: center;
+}
+
+.choices.is-focused .choices__inner {
+    border-color: var(--athena-yellow) !important;
+    box-shadow: 0 0 0 0.25rem rgba(244, 165, 0, 0.25);
+}
+
+.choices__list--dropdown,
+.choices__list[aria-expanded] {
+    background-color: var(--athena-card-bg) !important;
+    border: 1px solid var(--athena-border) !important;
+    color: var(--athena-text) !important;
+    z-index: 1050; /* Ensure dropdown is above everything */
+}
+
+/* Dropdown items */
+.choices__list--dropdown .choices__item,
+.choices__list[aria-expanded] .choices__item {
+    color: var(--athena-text) !important;
+    background-color: transparent !important;
+    padding: 0.5rem 1rem;
+}
+
+/* Hover/Active state in dropdown */
+.choices__list--dropdown .choices__item--selectable.is-highlighted,
+.choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
+    background-color: var(--athena-yellow) !important;
+    color: #000 !important;
+}
+
+/* Selected tags in the input */
+.choices__list--multiple .choices__item {
+    background-color: var(--athena-yellow) !important;
+    border: 1px solid #d48e00 !important;
+    color: #000 !important;
+    margin-right: 4px;
+    margin-bottom: 2px; /* Slight spacing */
+    padding: 0 8px; /* Reduced vertical padding */
+    font-size: 0.75rem; /* Smaller font for tags */
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    height: 22px; /* Reduced height */
+    line-height: 1;
+}
+
+.choices__list--multiple .choices__item .choices__button {
+    margin: 0 -4px 0 8px; /* More space before pipe */
+    border-left: 1px solid rgba(0,0,0,0.2) !important;
+    padding: 0 8px; /* More space around the X */
+}
+
+/* Input field inside Choices */
+.choices__input {
+    background-color: transparent !important;
+    color: var(--athena-text) !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    height: 22px !important; /* Match tag height */
+    font-size: 1rem;
+    min-width: 100px; /* Ensure space to type */
+}
+
+/* Choices.js Floating Label Fix - Container Adjustment */
+.form-floating .choices .choices__inner {
+    padding-top: 1.8rem !important; /* Increased top padding to separate from label */
+    padding-bottom: 0.25rem !important;
+    padding-left: 0.75rem !important;
+    min-height: 58px !important;
+    border-radius: var(--bs-border-radius);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px; /* Space between items */
+}
+
+/* Textarea Fixes */
+.form-floating > textarea.form-control {
+    min-height: 120px; /* Double the default height */
+}
+
+/* Fix for the white background patch on textarea labels */
+.form-floating > textarea.form-control ~ label {
+    background-color: transparent !important;
+}
+
+.form-floating > textarea.form-control ~ label::after {
+    background-color: transparent !important;
+}
+
+/* Ensure textarea label behaves exactly like other inputs */
+.form-floating > textarea.form-control:focus ~ label,
+.form-floating > textarea.form-control:not(:placeholder-shown) ~ label {
+    color: var(--athena-yellow);
+    opacity: 1;
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+    background-color: transparent !important;
+}
+
+/* Flatpickr Floating Label Fix */
+/* When the altInput (which is visible) is focused or has value */
+.form-floating > .form-control.flatpickr-input:not([type="hidden"]):focus ~ label,
+.form-floating > .form-control.flatpickr-input:not([type="hidden"]):not(:placeholder-shown) ~ label {
+    opacity: 1;
+    transform: scale(0.85) translateY(-0.75rem) translateX(0.15rem);
+    color: var(--athena-yellow);
+}
+
+.flatpickr-calendar {
+    background: var(--athena-card-bg) !important;
+    border: 1px solid var(--athena-border) !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+}
+
+.flatpickr-day {
+    color: var(--athena-text) !important;
+}
+
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange, .flatpickr-day:hover, .flatpickr-day.prevMonthDay:hover, .flatpickr-day.nextMonthDay:hover, .flatpickr-day:focus, .flatpickr-day.prevMonthDay:focus, .flatpickr-day.nextMonthDay:focus {
+    background: var(--athena-yellow) !important;
+    border-color: var(--athena-yellow) !important;
+    color: #000 !important;
+}
+
+.flatpickr-months .flatpickr-month {
+    background: var(--athena-card-bg) !important;
+    color: var(--athena-text) !important;
+    fill: var(--athena-text) !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    background: var(--athena-card-bg) !important;
+}
+
+.flatpickr-weekday {
+    background: var(--athena-card-bg) !important;
+    color: var(--athena-text) !important;
+}
+
+/* Ensure all card headers have consistent height and centered content */
+.card-header {
+    min-height: 57px; /* Adjust based on button height + padding */
+    display: flex;
+    align-items: center;
 }

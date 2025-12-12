@@ -1,0 +1,42 @@
+{% use 'bootstrap_5_layout.html.twig' %}
+
+{% block form_row %}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+
+    {# Determine if we should use floating labels #}
+    {# We exclude:
+       - checkbox/radio (handled by their own blocks)
+       - file inputs (don't support floating labels well)
+       - compound forms (like expanded choices/collections) EXCEPT if it's a single_text date/time which is not compound in HTML5
+    #}
+    {% set is_checkbox = 'checkbox' in block_prefixes %}
+    {% set is_radio = 'radio' in block_prefixes %}
+    {% set is_file = 'file' in block_prefixes %}
+    {% set is_compound = compound ?? false %}
+    {% set is_choice_expanded = 'choice' in block_prefixes and expanded|default(false) %}
+    {% set is_multiple_select = 'choice' in block_prefixes and multiple|default(false) and not expanded|default(false) %}
+
+    {# Note: 'date' with single_text is NOT compound. 'choice' not expanded is NOT compound. #}
+
+    {% if not is_checkbox and not is_radio and not is_file and not is_compound and not is_choice_expanded %}
+        {% set row_attr = row_attr|default({})|merge({class: (row_attr.class|default('') ~ ' form-floating')|trim}) %}
+        <div {% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+            {% set placeholder_value = attr.placeholder is defined ? attr.placeholder : label|default('...') %}
+            {{- form_widget(form, widget_attr|merge({attr: attr|merge({placeholder: placeholder_value})})) -}}
+            {{- form_label(form) -}}
+            {{- form_errors(form) -}}
+            {{- form_help(form) -}}
+        </div>
+    {% else %}
+        {% set row_attr = row_attr|default({})|merge({class: (row_attr.class|default('') ~ ' mb-3')|trim}) %}
+        <div {% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+            {{- form_label(form, null, {label_attr: {class: 'form-label'}}) -}}
+            {{- form_widget(form, widget_attr) -}}
+            {{- form_errors(form) -}}
+            {{- form_help(form) -}}
+        </div>
+    {% endif %}
+{% endblock form_row %}

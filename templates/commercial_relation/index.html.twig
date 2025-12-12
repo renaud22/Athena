@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Relations Commerciales{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-secondary">
+        <h1 class="h2">Relations Commerciales</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="{{ path('app_commercial_relation_new') }}" class="btn btn-sm btn-primary">
+                <i class="bi bi-plus-lg"></i> Nouvelle Relation
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if commercial_relations is empty %}
+            <div class="col-12">
+                <div class="alert alert-info">Aucune relation commerciale trouvée.</div>
+            </div>
+        {% else %}
+            {% for commercial_relation in commercial_relations %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 bg-dark border-secondary text-light">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title text-primary mb-0">{{ commercial_relation.name }}</h5>
+                                <span class="badge bg-secondary">{{ commercial_relation.type }}</span>
+                            </div>
+                            <p class="card-text text-muted small mb-2">
+                                {% for type in commercial_relation.relationTypes %}
+                                    <span class="badge bg-dark border border-secondary">{{ type }}</span>
+                                {% endfor %}
+                            </p>
+                            <p class="card-text">
+                                <strong>Statut:</strong> {{ commercial_relation.salesStatus }}<br>
+                                <strong>Contacts:</strong> {{ commercial_relation.contacts|length }}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-secondary d-flex justify-content-between">
+                            <a href="{{ path('app_commercial_relation_edit', {'id': commercial_relation.id}) }}" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

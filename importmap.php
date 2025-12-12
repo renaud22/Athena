@@ -35,4 +35,34 @@ return [
         'version' => '5.3.8',
         'type' => 'css',
     ],
+    'imask' => [
+        'version' => '7.6.1',
+    ],
+    '@orchidjs/sifter' => [
+        'version' => '1.1.0',
+    ],
+    '@orchidjs/unicode-variants' => [
+        'version' => '1.1.2',
+    ],
+    'tom-select/dist/css/tom-select.default.min.css' => [
+        'version' => '2.4.3',
+        'type' => 'css',
+    ],
+    'choices.js' => [
+        'version' => '11.1.0',
+    ],
+    'choices.js/public/assets/styles/choices.min.css' => [
+        'version' => '11.1.0',
+        'type' => 'css',
+    ],
+    'flatpickr' => [
+        'version' => '4.6.13',
+    ],
+    'flatpickr/dist/flatpickr.min.css' => [
+        'version' => '4.6.13',
+        'type' => 'css',
+    ],
+    'flatpickr/dist/l10n/fr.js' => [
+        'version' => '4.6.13',
+    ],
 ];

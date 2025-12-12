@@ -1,0 +1,80 @@
+{% form_theme form 'form/floating_theme.html.twig' 'commercial_relation/_contact_theme.html.twig' %}
+
+{{ form_start(form) }}
+    <div class="row">
+        {# Left Column: Commercial Relation Information #}
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header text-primary fw-bold">Informations Générales</div>
+                <div class="card-body">
+                    <div class="mb-3 row">
+                        <div class="col-md-6 mb-3 mb-md-0">{{ form_row(form.name) }}</div>
+                        <div class="col-md-6">{{ form_row(form.type) }}</div>
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.relationTypes) }}
+                    </div>
+                    <div class="mb-3">{{ form_row(form.salesStatus) }}</div>
+                    <div class="mb-3 row">
+                        <div class="col-md-6 mb-3 mb-md-0">{{ form_row(form.siret) }}</div>
+                        <div class="col-md-6">{{ form_row(form.tvaIntra) }}</div>
+                    </div>
+                    <div>{{ form_row(form.website) }}</div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header text-primary fw-bold">Adresses</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0">{{ form_row(form.billingAddress) }}</div>
+                        <div class="col-md-6">{{ form_row(form.physicalAddress) }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header text-primary fw-bold">Détails & Notes</div>
+                <div class="card-body">
+                    <div class="mb-3">{{ form_row(form.myBenefits) }}</div>
+                    <div class="mb-3">{{ form_row(form.theirBenefits) }}</div>
+                    <div>{{ form_row(form.comments) }}</div>
+                </div>
+            </div>
+        </div>
+
+        {# Right Column: Contacts #}
+        <div class="col-lg-6"
+             data-controller="form-collection"
+             data-form-collection-index-value="{{ form.contacts|length > 0 ? form.contacts|last.vars.name + 1 : 0 }}"
+             data-form-collection-prototype-value="{{ form_widget(form.contacts.vars.prototype)|e('html_attr') }}">
+
+            <div data-form-collection-target="collectionContainer">
+                {% for contactForm in form.contacts %}
+                    <div class="card contact-item" data-controller="contact-item">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-primary" data-contact-item-target="title">Contact #{{ loop.index }}</span>
+                            <div>
+                                <button type="button" class="btn btn-sm btn-outline-primary me-2" data-action="form-collection#addCollectionElement">
+                                    <i class="bi bi-person-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Supprimer"
+                                        data-action="form-collection#removeCollectionElement"
+                                        {% if form.contacts|length <= 1 %}disabled{% endif %}>
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {{ form_widget(contactForm) }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end my-4">
+        <button class="btn btn-primary btn-lg">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+{{ form_end(form) }}

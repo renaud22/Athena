@@ -12,6 +12,14 @@
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
+            <script>
+                window.initMap = function() {
+                    // Callback function required by Google Maps API
+                    // Dispatch a custom event that our controller can listen to if needed
+                    window.dispatchEvent(new Event('google-maps-loaded'));
+                }
+            </script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4BxjS_5EjgkPhAlo-vZh1PIrSp73SfRc&libraries=places&callback=initMap" async defer></script>
         {% endblock %}
     </head>
     <body>
@@ -52,7 +60,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link {% if 'app_commercial_relation' in app.request.get('_route') %}active{% endif %}" href="{{ path('app_commercial_relation_index') }}">
                                         <i class="bi bi-briefcase text-primary me-2"></i> Relations Commerciales
                                     </a>
                                 </li>

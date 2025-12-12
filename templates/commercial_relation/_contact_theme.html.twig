@@ -1,0 +1,14 @@
+{% block contact_widget %}
+    <div class="row g-3">
+        <div class="col-md-6">{{ form_row(form.firstname) }}</div>
+        <div class="col-md-6">{{ form_row(form.lastname) }}</div>
+        <div class="col-md-6">{{ form_row(form.email) }}</div>
+        <div class="col-md-6">{{ form_row(form.phone) }}</div>
+        <div class="col-md-6">{{ form_row(form.jobTitle) }}</div>
+        <div class="col-md-6">{{ form_row(form.linkedinUrl) }}</div>
+        <div class="col-md-6">{{ form_row(form.personalAddress) }}</div>
+        <div class="col-md-6">{{ form_row(form.birthday) }}</div>
+        <div class="col-12">{{ form_row(form.hobbies) }}</div>
+        <div class="col-12">{{ form_row(form.bio) }}</div>
+    </div>
+{% endblock %}

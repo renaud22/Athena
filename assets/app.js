@@ -1,5 +1,10 @@
+import './bootstrap.js';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'choices.js/public/assets/styles/choices.min.css';
+import 'flatpickr/dist/flatpickr.min.css';
+import '@hotwired/turbo';
+
 /*
  * Welcome to your app's main JavaScript file!
  *

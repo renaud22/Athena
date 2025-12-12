@@ -16,7 +16,7 @@ class CommercialRelation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'commercialRelations')]
+    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'commercialRelations', cascade: ['persist'])]
     private Collection $contacts;
 
     public function __construct()
@@ -50,9 +50,6 @@ class CommercialRelation
 
     #[ORM\Column]
     private array $relationTypes = [];
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $lastContactDate = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $myBenefits = null;
@@ -172,18 +169,6 @@ class CommercialRelation
     public function setRelationTypes(array $relationTypes): static
     {
         $this->relationTypes = $relationTypes;
-
-        return $this;
-    }
-
-    public function getLastContactDate(): ?\DateTimeInterface
-    {
-        return $this->lastContactDate;
-    }
-
-    public function setLastContactDate(?\DateTimeInterface $lastContactDate): static
-    {
-        $this->lastContactDate = $lastContactDate;
 
         return $this;
     }
