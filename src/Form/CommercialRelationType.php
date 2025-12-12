@@ -14,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints\Callback;
 
 class CommercialRelationType extends AbstractType
 {
@@ -22,10 +24,18 @@ class CommercialRelationType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom de l\'entité',
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Le nom de l\'entité est obligatoire.']),
+                ],
                 'attr' => ['placeholder' => ' ']
             ])
             ->add('type', ChoiceType::class, [
                 'label' => 'Type de structure',
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Le type de structure est obligatoire.']),
+                ],
                 'choices' => [
                     'Organisation' => 'Organisation',
                     'Particulier' => 'Particulier',
@@ -35,6 +45,10 @@ class CommercialRelationType extends AbstractType
             ])
             ->add('relationTypes', ChoiceType::class, [
                 'label' => 'Type de relation',
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Le type de relation est obligatoire.']),
+                ],
                 'choices' => [
                     'Client / Prospect' => 'Client / Prospect',
                     'Fournisseur' => 'Fournisseur',
@@ -55,6 +69,10 @@ class CommercialRelationType extends AbstractType
             ])
             ->add('salesStatus', ChoiceType::class, [
                 'label' => 'Statut commercial',
+                'required' => false, // Handled by validation callback
+                'constraints' => [
+                    new Callback([$this, 'validateSalesStatus']),
+                ],
                 'choices' => [
                     'Prospect froid' => 'Prospect froid',
                     'Prospect tiède' => 'Prospect tiède',
@@ -93,7 +111,7 @@ class CommercialRelationType extends AbstractType
                 ]
             ])
             ->add('website', UrlType::class, [
-                'label' => 'Site Web',
+                'label' => 'Site Web (URL complète)',
                 'required' => false,
                 'default_protocol' => 'https',
                 'attr' => [
@@ -104,7 +122,10 @@ class CommercialRelationType extends AbstractType
             ])
             ->add('billingAddress', TextType::class, [
                 'label' => 'Adresse de facturation',
-                'required' => false,
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'L\'adresse de facturation est obligatoire.']),
+                ],
                 'attr' => [
                     'data-controller' => 'address-autocomplete',
                     'placeholder' => ' '
@@ -148,5 +169,20 @@ class CommercialRelationType extends AbstractType
         $resolver->setDefaults([
             'data_class' => CommercialRelation::class,
         ]);
+    }
+
+    public function validateSalesStatus($value, ExecutionContextInterface $context): void
+    {
+        $form = $context->getRoot();
+        $data = $form->getData();
+
+        if ($data instanceof CommercialRelation) {
+            $relationTypes = $data->getRelationTypes();
+            if (in_array('Client / Prospect', $relationTypes) && empty($value)) {
+                $context->buildViolation('Le statut commercial est obligatoire pour les clients/prospects.')
+                    ->atPath('salesStatus')
+                    ->addViolation();
+            }
+        }
     }
 }

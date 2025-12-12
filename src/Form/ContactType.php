@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ContactType extends AbstractType
 {
@@ -20,10 +21,18 @@ class ContactType extends AbstractType
         $builder
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Le prénom est obligatoire.']),
+                ],
                 'attr' => ['placeholder' => ' ']
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'Nom',
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Le nom est obligatoire.']),
+                ],
                 'attr' => ['placeholder' => ' ']
             ])
             ->add('jobTitle', TextType::class, [
@@ -33,7 +42,11 @@ class ContactType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
-                'required' => false,
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'L\'email est obligatoire.']),
+                    new Assert\Email(['message' => 'L\'email {{ value }} n\'est pas valide.']),
+                ],
                 'attr' => ['placeholder' => ' ']
             ])
             ->add('phone', TextType::class, [
@@ -44,7 +57,7 @@ class ContactType extends AbstractType
                 ]
             ])
             ->add('linkedinUrl', UrlType::class, [
-                'label' => 'Profil LinkedIn',
+                'label' => 'Profil LinkedIn (URL complète)',
                 'required' => false,
                 'default_protocol' => 'https',
                 'attr' => [

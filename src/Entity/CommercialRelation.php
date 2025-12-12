@@ -39,13 +39,13 @@ class CommercialRelation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $website = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $billingAddress = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $physicalAddress = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $salesStatus = null;
 
     #[ORM\Column]

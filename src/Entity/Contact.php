@@ -25,7 +25,7 @@ class Contact
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $birthday = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $email = null;
 
     #[ORM\Column(length: 50, nullable: true)]

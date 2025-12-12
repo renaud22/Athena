@@ -495,3 +495,23 @@ a:hover {
     display: flex;
     align-items: center;
 }
+
+/* Required Field Asterisk - Sexy Style */
+.required-asterisk {
+    display: inline-block;
+    color: var(--athena-yellow);
+    font-family: 'Georgia', 'Times New Roman', serif; /* Serif font for a prettier star shape */
+    font-size: 1.4rem;
+    line-height: 1;
+    vertical-align: middle;
+    margin-left: 0.25rem;
+    text-shadow: 0 0 10px rgba(244, 165, 0, 0.7); /* Nice glow effect */
+    transform: translateY(2px);
+    cursor: help;
+    transition: all 0.3s ease;
+}
+
+.required-asterisk:hover {
+    transform: translateY(2px) scale(1.2) rotate(15deg);
+    text-shadow: 0 0 15px rgba(244, 165, 0, 1);
+}

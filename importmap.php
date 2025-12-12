@@ -65,4 +65,38 @@ return [
     'flatpickr/dist/l10n/fr.js' => [
         'version' => '4.6.13',
     ],
+    'codemirror/addon/edit/continuelist.js' => [
+        'version' => '5.65.18',
+    ],
+    'codemirror/addon/display/fullscreen.js' => [
+        'version' => '5.65.18',
+    ],
+    'codemirror/mode/markdown/markdown.js' => [
+        'version' => '5.65.18',
+    ],
+    'codemirror/addon/mode/overlay.js' => [
+        'version' => '5.65.18',
+    ],
+    'codemirror/addon/display/placeholder.js' => [
+        'version' => '5.65.18',
+    ],
+    'codemirror/addon/display/autorefresh.js' => [
+        'version' => '5.65.18',
+    ],
+    'codemirror/addon/selection/mark-selection.js' => [
+        'version' => '5.65.18',
+    ],
+    'codemirror/addon/search/searchcursor.js' => [
+        'version' => '5.65.18',
+    ],
+    'codemirror/mode/gfm/gfm.js' => [
+        'version' => '5.65.18',
+    ],
+    'codemirror/mode/xml/xml.js' => [
+        'version' => '5.65.18',
+    ],
+    'codemirror/lib/codemirror.min.css' => [
+        'version' => '5.65.18',
+        'type' => 'css',
+    ],
 ];
