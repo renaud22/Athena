@@ -1,32 +1,55 @@
 import { Controller } from '@hotwired/stimulus';
 
+let googleMapsLoadingPromise = null;
+
+function loadGoogleMaps() {
+    if (googleMapsLoadingPromise) return googleMapsLoadingPromise;
+
+    googleMapsLoadingPromise = new Promise((resolve, reject) => {
+        if (typeof google !== 'undefined' && google.maps) {
+            resolve(google.maps);
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD4BxjS_5EjgkPhAlo-vZh1PIrSp73SfRc&libraries=places&callback=initGoogleMapsCallback";
+        script.async = true;
+        script.defer = true;
+
+        window.initGoogleMapsCallback = () => {
+            resolve(google.maps);
+        };
+
+        script.onerror = (error) => {
+            console.error('Google Maps load error:', error);
+            reject(error);
+        };
+
+        document.head.appendChild(script);
+    });
+
+    return googleMapsLoadingPromise;
+}
+
 /*
- * This controller requires the Google Maps JavaScript API with Places library.
- * Ensure you have <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script> in your layout.
+ * This controller loads the Google Maps JavaScript API with Places library on demand.
  */
 export default class extends Controller {
     static targets = ['input'];
 
     connect() {
-        this.attemptInitialization();
-    }
-
-    attemptInitialization() {
-        // On vérifie si l'API Google est chargée
-        if (typeof google !== 'undefined' && typeof google.maps !== 'undefined' && typeof google.maps.places !== 'undefined') {
+        loadGoogleMaps().then(() => {
             this.initAutocomplete();
-        } else {
-            // Sinon, on réessaie dans 100ms
-            console.log('Google Maps API not ready yet, retrying...');
-            setTimeout(() => this.attemptInitialization(), 100);
-        }
+        }).catch(error => {
+            console.error('Failed to load Google Maps API:', error);
+        });
     }
 
     initAutocomplete() {
         console.log('Initializing Google Places Autocomplete');
 
         const options = {
-            fields: ["formatted_address", "geometry", "name"],
+            fields: ["formatted_address"],
             strictBounds: false,
             types: ['address'],
         };

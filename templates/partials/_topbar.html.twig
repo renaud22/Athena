@@ -1,0 +1,16 @@
+<!-- Top Bar (Visible mobile & desktop) -->
+<header class="navbar navbar-dark sticky-top bg-dark shadow border-bottom border-secondary">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <div class="navbar-brand px-3 py-0">
+            <a href="{{ path('app_dashboard') }}">
+                <img src="{{ asset('images/athena_logo.png') }}" alt="Athena Logo" class="img-fluid" style="max-height: 40px;">
+            </a>
+        </div>
+
+        <!-- Burger Button (Mobile only) -->
+        <button class="navbar-toggler collapsed d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</header>

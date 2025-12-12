@@ -4,6 +4,7 @@
     --athena-text: #f8f9fa;
     --athena-card-bg: #2c2c2c;
     --athena-border: #444;
+    --header-height: 60px;
 }
 
 body {
@@ -644,4 +645,14 @@ a:hover {
 /* Ensure the select text (empty option) is hidden so it doesn't overlap label */
 .form-floating > .form-select:not(:focus):invalid {
     color: transparent;
+}
+
+/* Sidebar Layout */
+#sidebarMenu {
+    height: calc(100vh - var(--header-height)) !important;
+    top: var(--header-height) !important;
+}
+
+.offcanvas-backdrop {
+    top: var(--header-height);
 }

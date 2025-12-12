@@ -12,88 +12,15 @@
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
-            <script>
-                window.initMap = function() {
-                    // Callback function required by Google Maps API
-                    // Dispatch a custom event that our controller can listen to if needed
-                    window.dispatchEvent(new Event('google-maps-loaded'));
-                }
-            </script>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4BxjS_5EjgkPhAlo-vZh1PIrSp73SfRc&libraries=places&callback=initMap" async defer></script>
         {% endblock %}
     </head>
     <body>
-        <!-- Mobile Header (Visible only on mobile) -->
-        <header class="navbar navbar-dark sticky-top bg-dark shadow d-md-none border-bottom border-secondary">
-            <div class="container-fluid">
-                <a class="navbar-brand px-3 fs-6 text-primary fw-bold" href="#">⚡ ATHENA</a>
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-        </header>
+        {{ include('partials/_topbar.html.twig') }}
 
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
-                <div class="sidebar border-end border-secondary col-md-3 col-lg-2 p-0 bg-dark">
-                    <div class="offcanvas-md offcanvas-start bg-dark text-white min-vh-100" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-
-                        <!-- Offcanvas Header (Mobile only) -->
-                        <div class="offcanvas-header border-bottom border-secondary">
-                            <h5 class="offcanvas-title text-primary fw-bold" id="sidebarMenuLabel">Athena</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
-                        </div>
-
-                        <div class="offcanvas-body d-flex flex-column p-0 pt-lg-3 overflow-y-auto">
-                            <!-- Desktop Logo (Visible only on desktop) -->
-                            <div class="d-none d-md-block px-3 pb-3 mb-3 border-bottom border-secondary">
-                                <a href="{{ path('app_dashboard') }}" class="text-decoration-none d-block text-center">
-                                    <img src="{{ asset('images/athena_logo.png') }}" alt="Athena Logo" class="img-fluid" style="max-height: 60px;">
-                                </a>
-                            </div>
-
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link {% if app.request.get('_route') == 'app_dashboard' %}active{% endif %}" href="{{ path('app_dashboard') }}">
-                                        <i class="bi bi-speedometer2 text-primary me-2"></i> Dashboard
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {% if 'app_commercial_relation' in app.request.get('_route') %}active{% endif %}" href="{{ path('app_commercial_relation_index') }}">
-                                        <i class="bi bi-briefcase text-primary me-2"></i> Relations Commerciales
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <i class="bi bi-people text-primary me-2"></i> Contacts
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <i class="bi bi-rocket-takeoff text-primary me-2"></i> Projets
-                                    </a>
-                                </li>
-                            </ul>
-
-                            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-uppercase text-light opacity-50">
-                                <span>Administration</span>
-                            </h6>
-                            <ul class="nav flex-column mb-2">
-                                <li class="nav-item">
-                                    <a class="nav-link {% if app.request.get('_route') == 'app_api_token_index' %}active{% endif %}" href="{{ path('app_api_token_index') }}">
-                                        <i class="bi bi-key text-primary me-2"></i> API Tokens
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('app_logout') }}">
-                                        <i class="bi bi-box-arrow-right text-primary me-2"></i> Déconnexion
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                {{ include('partials/_sidebar.html.twig') }}
 
                 <!-- Main Content -->
                 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
