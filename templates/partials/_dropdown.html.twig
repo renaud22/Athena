@@ -1,0 +1,21 @@
+<div class="dropdown {{ class|default('') }}">
+    <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-three-dots-vertical"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+        {% if detail_path|default(false) %}
+            <li><a class="dropdown-item" href="{{ detail_path }}"><i class="bi bi-eye me-2"></i>Détails</a></li>
+        {% endif %}
+
+        {% if edit_path|default(false) %}
+            <li><a class="dropdown-item" href="{{ edit_path }}"><i class="bi bi-pencil me-2"></i>Modifier</a></li>
+        {% endif %}
+
+        {% if delete_path|default(false) %}
+            {% if detail_path|default(false) or edit_path|default(false) %}
+                <li><hr class="dropdown-divider"></li>
+            {% endif %}
+            <li><a class="dropdown-item text-danger" href="{{ delete_path }}"><i class="bi bi-trash me-2"></i>Supprimer</a></li>
+        {% endif %}
+    </ul>
+</div>
