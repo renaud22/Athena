@@ -1,4 +1,5 @@
 import { Mail, SquarePen } from "lucide-react";
+import Link from "next/link";
 
 import type { LucideIcon } from "lucide-react";
 
@@ -35,19 +36,22 @@ export function TaskCard({ task }: { task: DashboardTask }) {
   const meta = kindMeta[task.kind];
   const Icon = meta.icon;
   return (
-    <article
-      className={cn(
-        "border-glass-line bg-glass flex items-center gap-3 rounded-sm border border-l-[3px] px-4 py-3",
-        railColor[task.urgency],
-      )}
-    >
-      <span aria-label={meta.label} title={meta.label}>
-        <Icon className="text-muted-foreground size-4" aria-hidden="true" />
-      </span>
-      <span className="min-w-0 flex-1 truncate text-sm">{task.label}</span>
-      <UrgencyPill level={task.urgency}>
-        {formatTaskDate(task.dateProgrammee)}
-      </UrgencyPill>
-    </article>
+    // Clic n'importe où sur la carte -> vue détail (FR10).
+    <Link href={`/taches/${task.id}`} className="block">
+      <article
+        className={cn(
+          "border-glass-line bg-glass hover:bg-glass-2 flex items-center gap-3 rounded-sm border border-l-[3px] px-4 py-3 transition-colors",
+          railColor[task.urgency],
+        )}
+      >
+        <span aria-label={meta.label} title={meta.label}>
+          <Icon className="text-muted-foreground size-4" aria-hidden="true" />
+        </span>
+        <span className="min-w-0 flex-1 truncate text-sm">{task.label}</span>
+        <UrgencyPill level={task.urgency}>
+          {formatTaskDate(task.dateProgrammee)}
+        </UrgencyPill>
+      </article>
+    </Link>
   );
 }
