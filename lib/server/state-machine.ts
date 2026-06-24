@@ -1,4 +1,4 @@
-import type { FunnelStatut, MsgStatut } from "@/lib/domain/enums";
+import type { FunnelStatut, MsgStatut, PostStatut } from "@/lib/domain/enums";
 
 // ============================================================================
 // Machine à états du cycle de vie de prospection (AD-4/AD-17) — TABLE DE
@@ -86,4 +86,54 @@ export function msgTransition(
 
 export function canMsgTransition(state: MsgStatut, action: MsgAction): boolean {
   return msgTransition(state, action) !== null;
+}
+
+// ============================================================================
+// Machine à états du statut d'un post LinkedIn (PostStatut). Cycle de préparation
+// IDEE -> A_REDIGER -> REDIGE -> PRET -> PROGRAMME -> PUBLIE (FR26), avec ANNULE et
+// A_REPROGRAMMER (créneau manqué) comme issues. PRET = même handoff qu'un message (AD-20).
+// ============================================================================
+
+export type PostAction =
+  | "commencerRedaction"
+  | "marquerRedige"
+  | "setPret"
+  | "annulerPret"
+  | "programmer"
+  | "publier"
+  | "reprogrammer" // créneau manqué -> à reprogrammer
+  | "confirmerReprog" // reprogrammé sur un nouveau créneau
+  | "annuler"
+  | "reactiver";
+
+const POST_TRANSITIONS: Record<
+  PostStatut,
+  Partial<Record<PostAction, PostStatut>>
+> = {
+  IDEE: { commencerRedaction: "A_REDIGER", annuler: "ANNULE" },
+  A_REDIGER: { marquerRedige: "REDIGE", annuler: "ANNULE" },
+  REDIGE: { setPret: "PRET", annuler: "ANNULE" },
+  PRET: { programmer: "PROGRAMME", annulerPret: "REDIGE", annuler: "ANNULE" },
+  PROGRAMME: {
+    publier: "PUBLIE",
+    reprogrammer: "A_REPROGRAMMER",
+    annuler: "ANNULE",
+  },
+  A_REPROGRAMMER: { confirmerReprog: "PROGRAMME", annuler: "ANNULE" },
+  PUBLIE: {}, // terminal
+  ANNULE: { reactiver: "A_REDIGER" },
+};
+
+export function postTransition(
+  state: PostStatut,
+  action: PostAction,
+): PostStatut | null {
+  return POST_TRANSITIONS[state][action] ?? null;
+}
+
+export function canPostTransition(
+  state: PostStatut,
+  action: PostAction,
+): boolean {
+  return postTransition(state, action) !== null;
 }

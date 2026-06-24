@@ -5,6 +5,7 @@ import {
   funnelTransition,
   isFunnelTerminal,
   msgTransition,
+  postTransition,
 } from "@/lib/server/state-machine";
 
 describe("Machine à états — funnel (AD-17)", () => {
@@ -70,5 +71,32 @@ describe("Machine à états — statut message (NFR3)", () => {
 
   it("permet d'annuler « Prêt »", () => {
     expect(msgTransition("PRET", "annulerPret")).toBe("A_PREPARER");
+  });
+});
+
+describe("Machine à états — statut post (FR26)", () => {
+  it("déroule le cycle IDEE -> ... -> PUBLIE", () => {
+    expect(postTransition("IDEE", "commencerRedaction")).toBe("A_REDIGER");
+    expect(postTransition("A_REDIGER", "marquerRedige")).toBe("REDIGE");
+    expect(postTransition("REDIGE", "setPret")).toBe("PRET");
+    expect(postTransition("PRET", "programmer")).toBe("PROGRAMME");
+    expect(postTransition("PROGRAMME", "publier")).toBe("PUBLIE");
+  });
+
+  it("permet ANNULE et A_REPROGRAMMER comme issues", () => {
+    expect(postTransition("PROGRAMME", "reprogrammer")).toBe("A_REPROGRAMMER");
+    expect(postTransition("A_REPROGRAMMER", "confirmerReprog")).toBe(
+      "PROGRAMME",
+    );
+    expect(postTransition("REDIGE", "annuler")).toBe("ANNULE");
+  });
+
+  it("PUBLIE est terminal et rejette toute action", () => {
+    expect(postTransition("PUBLIE", "annuler")).toBeNull();
+    expect(postTransition("PUBLIE", "publier")).toBeNull();
+  });
+
+  it("rejette une action hors séquence", () => {
+    expect(postTransition("IDEE", "publier")).toBeNull();
   });
 });
