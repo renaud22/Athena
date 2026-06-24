@@ -1,4 +1,5 @@
 import { DashboardList } from "@/components/dashboard/dashboard-list";
+import { ProspectionLine } from "@/components/prospection-line";
 import { getSampleDashboardTasks } from "@/lib/server/dashboard";
 
 // Tableau de bord « À faire » (route `/`). Server Component : l'urgence est dérivée côté
@@ -9,6 +10,7 @@ export default function DashboardPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-4">
       <h1 className="font-display text-2xl">À faire</h1>
+      <ProspectionLine conseil="Vise la qualité, pas le volume : un message bien ciblé vaut dix relances génériques." />
       <DashboardList tasks={tasks} />
     </div>
   );

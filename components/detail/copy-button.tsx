@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type ComponentProps, useEffect, useRef, useState } from "react";
 
 import { Check, Copy } from "lucide-react";
 
@@ -10,7 +10,17 @@ import { Button } from "@/components/ui/button";
 // à « Copié ✓ » pendant ~1,8 s. (Le toast viendra avec le composant Toast.)
 const REVERT_MS = 1800;
 
-export function CopyButton({ text }: { text: string }) {
+export function CopyButton({
+  text,
+  variant = "gold",
+  label = "Copier le texte",
+  size,
+}: {
+  text: string;
+  variant?: ComponentProps<typeof Button>["variant"];
+  label?: string;
+  size?: ComponentProps<typeof Button>["size"];
+}) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -33,14 +43,19 @@ export function CopyButton({ text }: { text: string }) {
   }
 
   return (
-    <Button variant="gold" onClick={handleCopy} aria-live="polite">
+    <Button
+      variant={variant}
+      size={size}
+      onClick={handleCopy}
+      aria-live="polite"
+    >
       {copied ? (
         <>
           <Check aria-hidden="true" /> Copié ✓
         </>
       ) : (
         <>
-          <Copy aria-hidden="true" /> Copier le texte
+          <Copy aria-hidden="true" /> {label}
         </>
       )}
     </Button>
