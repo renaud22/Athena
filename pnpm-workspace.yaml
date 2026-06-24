@@ -1,15 +1,15 @@
 # Réglages pnpm (pnpm 11 lit la config ici, plus dans package.json).
-# Aucun build script n'est exécuté à l'install : les binaires natifs sont déjà prébuilts
-# (bindings sharp/unrs/swc) et le client Prisma se génère via `prisma generate` au
-# branchement DB. Ça évite le verrou natif local (OneDrive/Defender, cf. MORNING-REPORT)
-# et le gate « ignored builds » de pnpm v11 — en local comme en CI.
-ignoredBuiltDependencies:
-  - "@prisma/engines"
-  - esbuild
-  - prisma
-  - sharp
-  - unrs-resolver
+# Décision EXPLICITE : ne PAS exécuter de build script à l'install (allowBuilds = false).
+# Les binaires natifs sont déjà prébuilts (bindings sharp/unrs/swc) et le client Prisma se
+# génère via `prisma generate` au branchement DB. Évite le verrou natif local (OneDrive/
+# Defender, cf. MORNING-REPORT) ET le gate « ignored builds » de pnpm v11 — local comme CI.
+allowBuilds:
+  "@prisma/engines": false
+  esbuild: false
+  prisma: false
+  sharp: false
+  unrs-resolver: false
 
-# Ne pas relancer un `install` de vérification avant chaque script (`pnpm test`, etc.) :
+# Ne pas relancer un install de vérification avant chaque script (`pnpm test`, etc.) :
 # rend les commandes déterministes et insensibles au verrou natif local.
 verifyDepsBeforeRun: false
