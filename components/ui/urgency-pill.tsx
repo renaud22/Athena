@@ -1,11 +1,14 @@
 import * as React from "react";
 
+import type { UrgencyLevel } from "@/lib/domain/urgency";
 import { cn } from "@/lib/utils";
+
+// Le type canonique du palier vit dans le domaine ; ré-exporté ici pour les consommateurs.
+export type { UrgencyLevel };
 
 // Système d'urgence à 4 paliers (DESIGN/UX-DR4), SÉPARÉ de l'or. La pastille porte la
 // couleur BRUTE ; le texte porte la variante ÉCLAIRCIE (lisibilité AA). Aucune confusion
 // possible avec l'or d'action. Les niveaux correspondent à la sortie de `computeUrgency`.
-export type UrgencyLevel = "none" | "far" | "soon" | "now";
 
 const levelConfig: Record<
   UrgencyLevel,
