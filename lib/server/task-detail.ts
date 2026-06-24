@@ -1,5 +1,6 @@
 import type { TaskKind } from "@/lib/domain/dashboard";
-import type { TaskDetail } from "@/lib/domain/task-detail";
+import type { Etape } from "@/lib/domain/enums";
+import type { TaskDetail, ThreadMessage } from "@/lib/domain/task-detail";
 
 import { computeUrgency } from "./urgency";
 
@@ -13,11 +14,15 @@ type Sample = {
   prospect: string;
   prospectLinkedinUrl: string | null;
   days: number | null;
+  etape: Etape | null;
+  accroche: string | null;
+  signaux: string[];
+  thread: ThreadMessage[];
 };
 
 // Jeu d'exemples (lot DB bloqué, cf. MORNING-REPORT). Mêmes identifiants que le dashboard.
-// À remplacer par un repository Prisma (MessageProgramme / PostLinkedIn) ; la forme du
-// TaskDetail ne change pas.
+// À remplacer par un repository Prisma (MessageProgramme / PostLinkedIn + Prospection) ;
+// la forme du TaskDetail ne change pas.
 const SAMPLES: Record<string, Sample> = {
   s1: {
     kind: "dm",
@@ -28,6 +33,17 @@ const SAMPLES: Record<string, Sample> = {
     prospect: "Karim Benali",
     prospectLinkedinUrl: "https://www.linkedin.com/in/karim-benali",
     days: 0,
+    etape: "TOUCHE_2",
+    accroche: "Gère sa prospection à la main, friction visible sur LinkedIn.",
+    signaux: ["prospection manuelle", "scale-up B2B"],
+    thread: [
+      {
+        id: "s1-t1",
+        from: "moi",
+        texte:
+          "Bonjour Karim, je me permets de me connecter : votre approche terrain m'intéresse.",
+      },
+    ],
   },
   s2: {
     kind: "post",
@@ -38,6 +54,10 @@ const SAMPLES: Record<string, Sample> = {
     prospect: "—",
     prospectLinkedinUrl: null,
     days: 1,
+    etape: null,
+    accroche: "Angle anti-bullshit : casser un mythe, prouver par un cas réel.",
+    signaux: ["preuve chiffrée", "gain de temps"],
+    thread: [],
   },
   s3: {
     kind: "dm",
@@ -48,6 +68,22 @@ const SAMPLES: Record<string, Sample> = {
     prospect: "Léa Moreau",
     prospectLinkedinUrl: "https://www.linkedin.com/in/lea-moreau",
     days: 2,
+    etape: "TOUCHE_3_BREAKUP",
+    accroche: "Process internes lourds évoqués dans un post récent.",
+    signaux: ["process manuels", "équipe qui grandit"],
+    thread: [
+      {
+        id: "s3-t1",
+        from: "moi",
+        texte: "Bonjour Léa, ravi d'être connecté !",
+      },
+      {
+        id: "s3-t2",
+        from: "moi",
+        texte:
+          "Petite question : qui gère l'automatisation de vos process aujourd'hui ?",
+      },
+    ],
   },
   s4: {
     kind: "post",
@@ -58,6 +94,11 @@ const SAMPLES: Record<string, Sample> = {
     prospect: "—",
     prospectLinkedinUrl: null,
     days: 5,
+    etape: null,
+    accroche:
+      "Build in public : montrer l'envers du décor, semaine par semaine.",
+    signaux: [],
+    thread: [],
   },
 };
 
@@ -74,6 +115,10 @@ export function getSampleTaskDetail(id: string, now: Date): TaskDetail | null {
     urgency: computeUrgency(dateProgrammee, now),
     dateProgrammee,
     texte: s.texte,
+    etape: s.etape,
+    accroche: s.accroche,
+    signaux: s.signaux,
+    thread: s.thread,
     prospect: s.prospect,
     prospectLinkedinUrl: s.prospectLinkedinUrl,
   };

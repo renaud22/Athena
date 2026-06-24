@@ -12,6 +12,10 @@ const detail: TaskDetail = {
   urgency: "now",
   dateProgrammee: null,
   texte: "Bonjour Karim, on se cale 15 min ?",
+  etape: "TOUCHE_2",
+  accroche: "Gère sa prospection à la main.",
+  signaux: ["prospection manuelle"],
+  thread: [{ id: "t1", from: "moi", texte: "Bonjour Karim !" }],
   prospect: "Karim",
   prospectLinkedinUrl: "https://www.linkedin.com/in/karim",
 };
@@ -19,7 +23,7 @@ const detail: TaskDetail = {
 describe("TaskDetailView (le joyau)", () => {
   it("affiche le texte, le titre en action nommée et le statut", () => {
     render(<TaskDetailView detail={detail} />);
-    expect(screen.getByText(/Bonjour Karim/)).toBeInTheDocument();
+    expect(screen.getByText(/on se cale 15 min/)).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "Touche 2 à Karim" }),
     ).toBeInTheDocument();

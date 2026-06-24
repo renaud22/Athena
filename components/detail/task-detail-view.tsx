@@ -1,3 +1,4 @@
+import { ContextPanel } from "@/components/detail/context-panel";
 import { CopyButton } from "@/components/detail/copy-button";
 import { LinkedinLink } from "@/components/detail/linkedin-link";
 import { ReadingSurface } from "@/components/detail/reading-surface";
@@ -31,12 +32,7 @@ export function TaskDetailView({ detail }: { detail: TaskDetail }) {
         </div>
       </div>
 
-      {/* Colonne contexte de rédaction (accroche + fil des touches) — Story 2.5. */}
-      <aside className="min-[1080px]:border-glass-line min-[1080px]:border-l min-[1080px]:pl-5">
-        <p className="text-muted-2 text-sm">
-          Contexte de rédaction — livré à la Story 2.5.
-        </p>
-      </aside>
+      <ContextPanel detail={detail} />
     </div>
   );
 }
