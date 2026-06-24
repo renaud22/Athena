@@ -13,6 +13,16 @@ function parisWeekday(date: Date): number {
   return PARIS_WEEKDAYS.indexOf(short);
 }
 
+/** Clé de jour civil (YYYY-MM-DD) en Europe/Paris — pour rattacher un post à son créneau. */
+export function parisDayKey(date: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
 /** Prochain créneau de la piste (mardi/jeudi en Europe/Paris) STRICTEMENT après `after`. */
 export function nextSlot(piste: Piste, after: Date): Date {
   const target = PISTE_WEEKDAY[piste];
