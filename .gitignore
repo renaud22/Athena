@@ -1,0 +1,31 @@
+# Environnement — JAMAIS commité (sauf le template d'exemple)
+.env
+.env.*
+!.env.local.example
+
+# Dépendances / build (complétés au scaffolding)
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Helpers/contournements LOCAUX machine (verrou OneDrive/Defender) — voir MORNING-REPORT.md
+.npmrc
+_install.sh
+_salvage.cjs
+
+# Rapport d'ops de la boucle agentique — local/éphémère, régénéré à chaque exécution
+MORNING-REPORT.md
+
+# Planification BMAD & config agent — NON publiés (dépôt public) ; conservés en local.
+_bmad/
+_bmad-output/
+.claude/
+
+# Divers
+*.log
+.DS_Store
+.vercel

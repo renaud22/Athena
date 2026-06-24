@@ -1,0 +1,66 @@
+// Schéma Prisma — SOURCE DE VÉRITÉ du schéma de base (AD-8 ; PostgREST jamais édité à la main).
+// Création INCRÉMENTALE (AC Story 1.1) : ce premier schéma ne contient QUE ce qu'il faut
+// pour l'auth/profil et la tâche `MessageProgramme` (dashboard/seed). Les autres entités
+// (Prospection, PostLinkedIn, Entreprise, Contact, Projet, Document…) et les relations
+// sont ajoutées au fil des epics, chacune par sa propre migration.
+// Enums : jeu canonique de l'addendum (AD-12), source de vérité.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// AD-7 — Connexion via driver adapter @prisma/adapter-pg (cf. prisma.config.ts).
+//   DATABASE_URL = pooler Supavisor (6543) avec ?pgbouncer=true à l'exécution.
+//   DIRECT_URL   = connexion directe (5432) pour les migrations (AD-19).
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Canal {
+  LINKEDIN
+  EMAIL
+  SMS
+  WHATSAPP
+  TELEPHONE
+  BOUCHE_A_OREILLE
+}
+
+enum Etape {
+  DEMANDE_CONNEXION
+  TOUCHE_1
+  TOUCHE_2
+  TOUCHE_3_BREAKUP
+}
+
+// PRET = « Prêt à envoyer » : contrat de handoff humain -> agent off-app (AD-20).
+enum MsgStatut {
+  A_PREPARER
+  PRET
+  ENVOYE
+}
+
+/// Profil de l'opérateur unique. `id` = identifiant de l'utilisateur Supabase Auth (uuid).
+/// RLS deny-all sur cette table (AD-9) — appliqué dans la migration.
+model Profile {
+  id        String   @id @db.Uuid
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+/// Action de prospection timée (DM). `intitule` porte le libellé d'action affiché au
+/// dashboard (« Touche 2 à Y », « Contacter X »…). `dateEnvoiPrevue` alimente le calcul
+/// d'urgence dérivé (AD-5). Le passage à ENVOYE est unique/irréversible (NFR3) : garanti
+/// par transition conditionnelle côté serveur (AD-16), introduite à l'Epic 3.
+/// La relation vers Prospection est ajoutée à l'Epic 3 (création incrémentale).
+model MessageProgramme {
+  id              String     @id @default(cuid())
+  intitule        String
+  etape           Etape
+  canal           Canal      @default(LINKEDIN)
+  texte           String?
+  dateEnvoiPrevue DateTime?
+  dateEnvoiReelle DateTime?
+  statut          MsgStatut  @default(A_PREPARER)
+}

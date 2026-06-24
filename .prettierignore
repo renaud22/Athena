@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+build
+coverage
+pnpm-lock.yaml
+_bmad
+_bmad-output
+_install.sh
+_salvage.cjs
+MORNING-REPORT.md
