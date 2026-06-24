@@ -51,3 +51,75 @@ export const ETAPE_LABEL: Record<Etape, string> = {
   TOUCHE_2: "Touche 2",
   TOUCHE_3_BREAKUP: "Touche 3 (breakup)",
 };
+
+// ---------- Monde B — Gestion client ----------
+export const STATUT_RELATIONS = [
+  "PROSPECT",
+  "CLIENT_ACTIF",
+  "CLIENT_INACTIF",
+  "PERDU",
+  "REFUSE",
+] as const;
+export type StatutRelation = (typeof STATUT_RELATIONS)[number];
+
+export const PROJET_TYPES = [
+  "AUTOMATISATION",
+  "APP",
+  "DASHBOARD",
+  "AUTRE",
+] as const;
+export type ProjetType = (typeof PROJET_TYPES)[number];
+
+export const PROJET_STATUTS = [
+  "AUDIT",
+  "DEVIS_ENVOYE",
+  "CONFIRME",
+  "EN_COURS",
+  "LIVRE",
+  "PERDU",
+] as const;
+export type ProjetStatut = (typeof PROJET_STATUTS)[number];
+
+export const DOC_TYPES = ["DEVIS", "FACTURE", "AVENANT", "AVOIR"] as const;
+export type DocType = (typeof DOC_TYPES)[number];
+
+export const DOC_STATUTS = [
+  "BROUILLON",
+  "ENVOYE",
+  "PAYE",
+  "EN_RETARD",
+  "REFUSE",
+] as const;
+export type DocStatut = (typeof DOC_STATUTS)[number];
+
+export const STATUT_RELATION_LABEL: Record<StatutRelation, string> = {
+  PROSPECT: "Prospect",
+  CLIENT_ACTIF: "Client actif",
+  CLIENT_INACTIF: "Client inactif",
+  PERDU: "Perdu",
+  REFUSE: "Refusé",
+};
+
+export const PROJET_STATUT_LABEL: Record<ProjetStatut, string> = {
+  AUDIT: "Audit",
+  DEVIS_ENVOYE: "Devis envoyé",
+  CONFIRME: "Confirmé",
+  EN_COURS: "En cours",
+  LIVRE: "Livré",
+  PERDU: "Perdu",
+};
+
+export const DOC_TYPE_LABEL: Record<DocType, string> = {
+  DEVIS: "Devis",
+  FACTURE: "Facture",
+  AVENANT: "Avenant",
+  AVOIR: "Avoir",
+};
+
+export const DOC_STATUT_LABEL: Record<DocStatut, string> = {
+  BROUILLON: "Brouillon",
+  ENVOYE: "Envoyé",
+  PAYE: "Payé",
+  EN_RETARD: "En retard",
+  REFUSE: "Refusé",
+};
